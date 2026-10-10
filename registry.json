@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "updated": "2026-03-31T07:43:19.688Z",
+  "updated": "2026-10-10T14:15:25.709Z",
   "categories": {
     "curated": [
       "1password",
@@ -92,7 +92,9 @@
       "whisper-transcribe",
       "youtube-bot"
     ],
-    "community": []
+    "community": [
+      "agent-reels"
+    ]
   },
   "skills": {
     "curated": [
@@ -2870,11 +2872,34 @@
         }
       }
     ],
-    "community": []
+    "community": [
+      {
+        "id": "com.community.skill.agent-reels",
+        "name": "agent-reels",
+        "displayName": "agent-reels",
+        "version": "0.4.0",
+        "path": "registry/community/agent-reels",
+        "description": "Find credited animation and motion references on 1human for a real visual task; consult an authorized shared library and publish only within the owner's approved scope.",
+        "category": "creative",
+        "namespace": "community",
+        "verified": false,
+        "source": "community",
+        "keywords": [
+          "animation",
+          "motion-design",
+          "references",
+          "attribution",
+          "human-agent"
+        ],
+        "metadata": {
+          "homepage": "https://reels.1human.tech"
+        }
+      }
+    ]
   },
   "stats": {
-    "totalSkills": 88,
+    "totalSkills": 89,
     "curatedCount": 88,
-    "communityCount": 0
+    "communityCount": 1
   }
 }
