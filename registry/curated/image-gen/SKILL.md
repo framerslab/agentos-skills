@@ -25,7 +25,7 @@ Use this skill when the user wants to create, edit, upscale, style-transfer, or 
 2. **`editImage()`** — Transform existing images via img2img, inpainting, or outpainting.
 3. **`upscaleImage()`** — Increase resolution (2x or 4x super-resolution).
 4. **`variateImage()`** — Generate visual variations of an existing image.
-5. **`transferStyle()`** — Apply the visual aesthetic of a reference image to a source image via Flux Redux.
+5. **`transferStyle()`** — Restyle a source image after a reference image, sending the provider both: Replicate and Fal on FLUX.2, Stability on its style-transfer endpoint, OpenAI as a two-image edit (AgentOS 0.13.59 and later). Other providers are refused.
 
 If the `generate_image` tool is not loaded, enable it with `extensions_enable image-generation`.
 
