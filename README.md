@@ -124,11 +124,11 @@ console.log(snapshot.prompt);
 
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on adding new skills.
+See [CONTRIBUTING.md](https://github.com/framerslab/agentos-skills/blob/master/CONTRIBUTING.md) for guidelines on adding new skills.
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE).
+Apache 2.0 — see [LICENSE](https://github.com/framerslab/agentos-skills/blob/master/LICENSE).
 
 ---
 
