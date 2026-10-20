@@ -30,6 +30,10 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       - run: pnpm install --no-frozen-lockfile
       - run: pnpm build
+      # Trusted publishing needs npm 11.5.1 or later: under Node 22's npm 10 the publish ends in ENEEDAUTH
+      # once a trusted publisher exists (framerslab/agentos Release run 39490192582, 20 October 2026).
+      - name: Use npm 11 for trusted publishing
+        run: npm install -g npm@11.20.0 && npm --version
       - name: Semantic Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
