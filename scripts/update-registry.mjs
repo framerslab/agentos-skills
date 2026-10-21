@@ -118,13 +118,15 @@ function generateRegistry() {
 
   const curated = curatedNames.map((name) => buildEntry(name, 'curated', updated));
   const community = communityNames.map((name) => buildEntry(name, 'community', updated));
+  // The category names the entries carry, once each (types.d.ts: SkillsRegistry.categories).
+  const categoriesOf = (entries) => [...new Set(entries.map((entry) => entry.category))].sort();
 
   return {
     version: '1.0.0',
     updated,
     categories: {
-      curated: curatedNames,
-      community: communityNames,
+      curated: categoriesOf(curated),
+      community: categoriesOf(community),
     },
     skills: {
       curated,
