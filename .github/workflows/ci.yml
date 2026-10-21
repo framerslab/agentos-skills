@@ -32,3 +32,6 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      - name: Registry checks
+        run: node --test test/registry.test.mjs
