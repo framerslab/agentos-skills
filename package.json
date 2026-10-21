@@ -62,6 +62,7 @@
     "url": "https://github.com/framerslab/agentos-skills.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   }
 }
