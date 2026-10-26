@@ -216,10 +216,10 @@ Every push to `master` starts the release workflow, which skips a push whose hea
 |---|---|
 | `feat` | minor |
 | `fix`, `perf`, `revert`, `chore(deps)`, a revert commit as `git revert` writes it | patch |
-| a `BREAKING CHANGE:` line in the commit body | major |
+| any type with `!` before the colon, or a `BREAKING CHANGE:` line in the commit body | major |
 | `docs`, `chore` (`chore(deps-dev)` included), `test`, `ci`, `build`, `style`, `refactor` | none |
 
-[`release.config.cjs`](https://github.com/framerslab/agentos-skills/blob/master/release.config.cjs) keeps semantic-release's defaults and adds the `chore(deps)` and `revert` rules. Commits are parsed with the default (angular) preset, which does not read a `!` before the colon: a `feat!:` commit without a `BREAKING CHANGE:` line parses with no type and releases nothing, so mark a breaking change with that line.
+[`release.config.cjs`](https://github.com/framerslab/agentos-skills/blob/master/release.config.cjs) keeps semantic-release's defaults, adds the `chore(deps)` and `revert` rules, and gives the default (angular) parser the `!` marker, so a `feat!:` title is read as a breaking change as the title check expects. Add a `BREAKING CHANGE:` line to the commit body to say what users must change.
 
 ## Promotion to Curated
 
