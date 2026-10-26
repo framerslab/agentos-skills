@@ -210,16 +210,16 @@ Before submitting, confirm:
 
 ## Commit Types and Releases
 
-Every push to `master` runs semantic-release, which publishes a new version from the subjects of the commits that landed since the last release. A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
+Every push to `master` starts the release workflow, which skips a push whose head commit message contains `[skip ci]` and otherwise runs semantic-release: it publishes a new version when a commit that landed since the last release has a releasing type, read from its subject. A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
 
 | Commit | Release |
 |---|---|
 | `feat` | minor |
-| `fix`, `perf`, `chore(deps)`, a revert commit as `git revert` writes it | patch |
+| `fix`, `perf`, `revert`, `chore(deps)`, a revert commit as `git revert` writes it | patch |
 | a `BREAKING CHANGE:` line in the commit body | major |
 | `docs`, `chore` (`chore(deps-dev)` included), `test`, `ci`, `build`, `style`, `refactor` | none |
 
-[`release.config.cjs`](https://github.com/framerslab/agentos-skills/blob/master/release.config.cjs) keeps semantic-release's defaults and adds the `chore(deps)` rule. Commits are parsed with the default (angular) preset, which does not read a `!` before the colon: a `feat!:` commit without a `BREAKING CHANGE:` line parses with no type and releases nothing, so mark a breaking change with that line.
+[`release.config.cjs`](https://github.com/framerslab/agentos-skills/blob/master/release.config.cjs) keeps semantic-release's defaults and adds the `chore(deps)` and `revert` rules. Commits are parsed with the default (angular) preset, which does not read a `!` before the colon: a `feat!:` commit without a `BREAKING CHANGE:` line parses with no type and releases nothing, so mark a breaking change with that line.
 
 ## Promotion to Curated
 
