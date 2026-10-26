@@ -185,7 +185,7 @@ git commit -m "feat: add my-skill community skill"
 git push origin add-skill/my-skill
 ```
 
-Open a pull request against the `main` branch. The PR template will guide you through the checklist.
+Open a pull request against the `master` branch and confirm the checklist below in its description. Title it in the Conventional Commits form, `type(scope): subject`, like the commit message in step 2; the "Pull request title" check refuses any other title.
 
 ### PR Checklist
 
@@ -207,6 +207,19 @@ Before submitting, confirm:
 - **Valid format**: Frontmatter must parse correctly with all required fields.
 - **Usefulness**: Does the skill provide value that is not already covered by an existing skill?
 - **Specificity**: Is the scope well-defined? Skills should do one thing well.
+
+## Commit Types and Releases
+
+Every push to `master` runs semantic-release, which publishes a new version from the subjects of the commits that landed since the last release. A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
+
+| Commit | Release |
+|---|---|
+| `feat` | minor |
+| `fix`, `perf`, `chore(deps)`, a revert commit as `git revert` writes it | patch |
+| a `BREAKING CHANGE:` line in the commit body | major |
+| `docs`, `chore` (`chore(deps-dev)` included), `test`, `ci`, `build`, `style`, `refactor` | none |
+
+[`release.config.cjs`](https://github.com/framerslab/agentos-skills/blob/master/release.config.cjs) keeps semantic-release's defaults and adds the `chore(deps)` rule. Commits are parsed with the default (angular) preset, which does not read a `!` before the colon: a `feat!:` commit without a `BREAKING CHANGE:` line parses with no type and releases nothing, so mark a breaking change with that line.
 
 ## Promotion to Curated
 
