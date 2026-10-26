@@ -210,7 +210,7 @@ Before submitting, confirm:
 
 ## Commit Types and Releases
 
-Every push to `master` starts the release workflow, which skips a push whose head commit message contains `[skip ci]` and otherwise runs semantic-release: it publishes a new version when a commit that landed since the last release has a releasing type, read from its subject. A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
+Every push to `master` starts the release workflow, which skips a push whose head commit message contains `[skip ci]` and otherwise runs semantic-release: it publishes a new version when a commit that landed since the last release calls for one, by the table below. A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
 
 | Commit | Release |
 |---|---|
