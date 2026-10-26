@@ -63,5 +63,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.1"
   }
 }

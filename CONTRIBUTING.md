@@ -185,7 +185,7 @@ git commit -m "feat: add my-skill community skill"
 git push origin add-skill/my-skill
 ```
 
-Open a pull request against the `main` branch. The PR template will guide you through the checklist.
+Open a pull request against the `master` branch and confirm the checklist below in its description. Title it in the Conventional Commits form, `type(scope): subject`, like the commit message in step 2; the "Pull request title" check refuses any other title.
 
 ### PR Checklist
 
@@ -207,6 +207,19 @@ Before submitting, confirm:
 - **Valid format**: Frontmatter must parse correctly with all required fields.
 - **Usefulness**: Does the skill provide value that is not already covered by an existing skill?
 - **Specificity**: Is the scope well-defined? Skills should do one thing well.
+
+## Commit Types and Releases
+
+Every push to `master` starts the release workflow, which skips a push whose head commit message contains `[skip ci]` and otherwise runs semantic-release: it publishes a new version when a commit that landed since the last release calls for one, by the table below. A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
+
+| Commit | Release |
+|---|---|
+| `feat` | minor |
+| `fix`, `perf`, `revert`, `chore(deps)`, a revert commit as `git revert` writes it | patch |
+| any type with `!` before the colon, or a `BREAKING CHANGE:` line in the commit body | major |
+| `docs`, `chore` (`chore(deps-dev)` included), `test`, `ci`, `build`, `style`, `refactor` | none |
+
+[`release.config.cjs`](https://github.com/framerslab/agentos-skills/blob/master/release.config.cjs) keeps semantic-release's defaults, adds the `chore(deps)` and `revert` rules, and gives the default (angular) parser the `!` marker, so a `feat!:` title is read as a breaking change as the title check expects. Add a `BREAKING CHANGE:` line to the commit body to say what users must change.
 
 ## Promotion to Curated
 

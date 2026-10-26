@@ -35,3 +35,6 @@ jobs:
 
       - name: Registry checks
         run: node --test test/registry.test.mjs
+
+      - name: Release rules
+        run: node --test test/release-rules.test.mjs
