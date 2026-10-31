@@ -63,7 +63,8 @@ const BANNED_CATEGORIES = [
   ['other illegal content', /\bother illegal content\b/i],
 ];
 
-// Words that put a tier past the hard bans.
+// Words that put a tier past the hard bans. Banned content is named on the hard-bans line alone, so a tier
+// line never mentions taboo or non-consensual content, not even to rule it out.
 const LIFTS_THE_LIMITS = /\bno limits\b|\bwithout limits\b|\bunrestricted\b|\banything goes\b|\btaboo\b|\bnon-?consen/i;
 
 test('every hard-bans line names the nine categories banned at every tier', () => {

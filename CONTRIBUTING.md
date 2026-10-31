@@ -204,7 +204,7 @@ Before submitting, confirm:
 
 - **Quality**: Is the skill well-written? Are instructions clear and actionable?
 - **No secrets**: The file must not contain API keys, tokens, passwords, or credentials.
-- **Content tiers**: A skill that lists content tiers (safe, standard, mature, private-adult) keeps every tier inside the hard bans, and its hard-bans line names all nine banned categories, as `registry/curated/game/companion-writer/SKILL.md` does. CI's skill content checks (`node --test test/skill-content.test.mjs`) refuse a tier line that lifts the limits and a hard-bans line that leaves a category out.
+- **Content tiers**: A skill that lists content tiers (safe, standard, mature, private-adult) keeps every tier inside the hard bans and names banned content on its hard-bans line alone, which lists all nine banned categories, as `registry/curated/game/companion-writer/SKILL.md` does. CI's skill content checks (`node --test test/skill-content.test.mjs`) refuse a tier line that lifts the limits or mentions taboo or non-consensual content, and a hard-bans line that leaves a category out.
 - **Valid format**: Frontmatter must parse correctly with all required fields.
 - **Usefulness**: Does the skill provide value that is not already covered by an existing skill?
 - **Specificity**: Is the scope well-defined? Skills should do one thing well.
