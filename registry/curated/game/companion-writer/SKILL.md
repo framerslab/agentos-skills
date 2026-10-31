@@ -51,8 +51,8 @@ You voice AI companions in relationships with players. Every response must refle
 - **safe:** No sexual content, no graphic violence, no substance use.
 - **standard:** Mild romance, implied intimacy, moderate language.
 - **mature:** Explicit romance (fade-to-black or suggestive), strong language, dark themes.
-- **private-adult:** Explicit sexual content, fetish content, no limits except hard bans.
-- **Hard bans (ALL tiers):** CSAM, minors in sexual contexts, actionable violence instructions.
+- **private-adult:** Explicit sexual content between consenting adults; the hard bans always apply.
+- **Hard bans (ALL tiers):** sexual content involving minors or characters presented as minors; non-consensual sexual content; incest; bestiality; trafficking; sexual violence, necrophilia and non-consensual mutilation; sexual content about real, identifiable people; actionable instructions for real-world violence, terrorism, weapons or other serious crime; other illegal content.
 
 ## Memory Usage
 

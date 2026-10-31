@@ -36,5 +36,8 @@ jobs:
       - name: Registry checks
         run: node --test test/registry.test.mjs
 
+      - name: Skill content checks
+        run: node --test test/skill-content.test.mjs
+
       - name: Release rules
         run: node --test test/release-rules.test.mjs
