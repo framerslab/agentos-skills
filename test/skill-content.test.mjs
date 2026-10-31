@@ -38,11 +38,13 @@ const linesMatching = (pattern) =>
     skill.lines.flatMap((line, i) => (pattern.test(line) ? [{ where: `${skill.path}:${i + 1}`, line }] : [])),
   );
 
-// A list item that defines a content tier, as in "- **private-adult:** ...".
-const TIER_LINE = /^\s*[-*]\s*\*\*(safe|standard|mature|private-adult)(\*\*)?\s*:/i;
-const PRIVATE_ADULT_LINE = /^\s*[-*]\s*\*\*private-adult(\*\*)?\s*:/i;
+// A list item that defines a content tier, as in "- **private-adult:** ..." or "- private-adult: ...".
+const TIER_LINE = /^\s*[-*]\s*(?:\*\*)?(safe|standard|mature|private-adult)(?:\*\*)?\s*:/i;
+const PRIVATE_ADULT_LINE = /^\s*[-*]\s*(?:\*\*)?private-adult(?:\*\*)?\s*:/i;
 // The list item that names the hard bans, as in "- **Hard bans (ALL tiers):** ...".
-const HARD_BANS_LINE = /^\s*[-*]\s*\*\*hard bans?\b/i;
+const HARD_BANS_LINE = /^\s*[-*]\s*(?:\*\*)?hard bans?\b/i;
+// What a private-adult line must say about the hard bans.
+const PRIVATE_ADULT_APPLIES = /\bthe hard bans always apply\b/i;
 
 // The categories banned at every tier, in the order the acceptable use policy lists them. The sixth category
 // is checked in its three parts.
@@ -65,7 +67,9 @@ const BANNED_CATEGORIES = [
 
 // Words that put a tier past the hard bans. Banned content is named on the hard-bans line alone, so a tier
 // line never mentions taboo or non-consensual content, not even to rule it out.
-const LIFTS_THE_LIMITS = /\bno limits\b|\bwithout limits\b|\bunrestricted\b|\banything goes\b|\btaboo\b|\bnon-?consen/i;
+// A line that sets the hard bans aside ("the hard bans do not apply", "without the hard bans") lifts them too.
+const LIFTS_THE_LIMITS =
+  /\bno limits\b|\bwithout limits\b|\bunrestricted\b|\banything goes\b|\btaboo\b|\bnon-?consen|\bhard bans?\b[^.;]*\b(?:do(?:es)? not|don'?t|doesn'?t|never|no longer|(?:are |is )?lifted|waived|suspended|relaxed)\b|\b(?:lift(?:s|ed)?|waive[sd]?|suspend(?:s|ed)?|ignor(?:e|es|ing)|without|no)\s+(?:the\s+)?hard bans?\b/i;
 
 test('every hard-bans line names the nine categories banned at every tier', () => {
   const lines = linesMatching(HARD_BANS_LINE);
@@ -101,7 +105,7 @@ test('private-adult is sexual content between consenting adults, under the hard 
   assert.ok(lines.length > 0, 'no skill defines the private-adult tier');
   for (const { where, line } of lines) {
     assert.match(line, /\bbetween consenting adults\b/i, `${where} does not limit private-adult to consenting adults`);
-    assert.match(line, /\bhard bans\b/i, `${where} does not say the hard bans apply`);
+    assert.match(line, PRIVATE_ADULT_APPLIES, `${where} does not say the hard bans always apply`);
   }
 });
 
