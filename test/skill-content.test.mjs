@@ -77,6 +77,17 @@ test('every hard-bans line names the nine categories banned at every tier', () =
   }
 });
 
+test('a skill that defines content tiers names its hard bans', () => {
+  const tiered = skills.filter((skill) => skill.lines.some((line) => TIER_LINE.test(line)));
+  assert.ok(tiered.length > 0, 'no skill defines its content tiers');
+  for (const skill of tiered) {
+    assert.ok(
+      skill.lines.some((line) => HARD_BANS_LINE.test(line)),
+      `${skill.path} defines content tiers but has no hard-bans line`,
+    );
+  }
+});
+
 test('no tier line lifts the limits past the hard bans', () => {
   const lines = linesMatching(TIER_LINE);
   assert.ok(lines.length > 0, 'no skill defines its content tiers');
