@@ -104,3 +104,17 @@ test('private-adult is sexual content between consenting adults, under the hard 
     assert.match(line, /\bhard bans\b/i, `${where} does not say the hard bans apply`);
   }
 });
+
+test('the matchers read unbolded tier bullets and refuse a tier line that sets the hard bans aside', () => {
+  const good = '- **private-adult:** Explicit sexual content between consenting adults; the hard bans always apply.';
+  assert.match('- private-adult: Explicit sexual content between consenting adults', TIER_LINE);
+  assert.match('* safe: No sexual content', TIER_LINE);
+  assert.match('- private-adult: Explicit sexual content between consenting adults', PRIVATE_ADULT_LINE);
+  assert.match('- Hard bans (all tiers): incest', HARD_BANS_LINE);
+  assert.match('- **private-adult:** Explicit sexual content between consenting adults; the hard bans do not apply.', LIFTS_THE_LIMITS);
+  assert.match('- **mature:** Dark themes; the hard bans are lifted for this tier.', LIFTS_THE_LIMITS);
+  assert.match('- **mature:** Dark themes, without the hard bans.', LIFTS_THE_LIMITS);
+  assert.doesNotMatch(good, LIFTS_THE_LIMITS);
+  assert.match(good, PRIVATE_ADULT_APPLIES);
+  assert.doesNotMatch('- **private-adult:** Explicit sexual content between consenting adults; hard bans aside.', PRIVATE_ADULT_APPLIES);
+});
