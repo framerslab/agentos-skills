@@ -15,8 +15,9 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // The angular preset's parser, which the commit analyzer uses when no preset is named
-// (conventional-changelog-angular 8): its revert pattern and its note keyword. A note line is
-// `^(?:\*\s+)?(<keywords>):\s*(.*)`, case-insensitive (conventional-commits-parser 6).
+// (conventional-changelog-angular 8.3): its revert pattern and its note keyword. A note line is
+// `^[\s|*]*(<keywords>)[:\s]+(.*)`, case-insensitive (conventional-commits-parser 6.4, dist/regex.js),
+// so an indented note, a starred one and one without its colon all count.
 const DEFAULT_HEADER = /^(\w*)(?:\((.*)\))?: (.*)$/;
 const DEFAULT_BREAKING_HEADER = null;
 const REVERT = /^(?:Revert|revert:)\s"?([\s\S]+?)"?\s*This reverts commit (\w{7,40})\b/i;
@@ -68,7 +69,7 @@ const matches = (rule, type, scope) => rule.type === type && (rule.scope === und
 /** How a commit message releases: its type, `!`, a breaking-change note or a revert; null when it does not. */
 export function releaseReason(message, { rules, header, breakingHeader, noteKeywords }) {
   const [first = '', ...rest] = message.split('\n');
-  const notes = new RegExp(`^(?:\\*\\s+)?(${noteKeywords.map(escape).join('|')}):\\s*`, 'i');
+  const notes = new RegExp(`^[\\s|*]*(${noteKeywords.map(escape).join('|')})[:\\s]+`, 'i');
   if (rest.some((line) => notes.test(line))) return 'breaking-change note';
   if (breakingHeader && breakingHeader.test(first)) return `${breakingHeader.exec(first)[1]}!`;
   // git's `Revert "<header>"` message; the analyzer's own rules release a revert as a patch.

@@ -43,6 +43,9 @@ const cases = [
   ['feat(registry): add the stats block', 'minor'],
   ['chore(release): 1.2.3', null],
   ['docs: say so\n\nbreaking change: the note keyword is read whatever its case.', 'major'],
+  ['refactor: change the schema\n\n  BREAKING CHANGE: an indented note is read too.', 'major'],
+  ['refactor: change the schema\n\n* BREAKING CHANGE a starred note without its colon is read too.', 'major'],
+  ['refactor: change the schema\n\nThis is not a BREAKING CHANGE: the keyword starts a note only at the start of a line.', null],
 ];
 
 for (const [message, release] of cases) {
