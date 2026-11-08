@@ -211,7 +211,17 @@ Before submitting, confirm:
 
 ## Commit Types and Releases
 
-Every push to `master` starts the release workflow, which skips a push whose head commit message contains `[skip ci]` and otherwise runs semantic-release: it publishes a new version when a commit that landed since the last release calls for one, by the table below. A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
+A release runs once a day, at 10:17 UTC, when releasable changes merged to `master` since the last release. The release workflow ([`release.yml`](https://github.com/framerslab/agentos-skills/blob/master/.github/workflows/release.yml)) first reads the commits since the newest `v<version>` tag: a commit is releasable when it calls for a release by the table below and changes a file the package ships (a file its `package.json` `files` field names, `package.json`, `README.md` or `LICENSE`). When none is, the run ends there. Otherwise CI runs on `master`'s commit and semantic-release publishes a new version. A push to `master` runs CI alone and publishes nothing. GitHub can start a scheduled run late when Actions is busy.
+
+A maintainer can release now by dispatching the workflow on `master`:
+
+```bash
+gh workflow run release.yml --ref master
+gh workflow run release.yml --ref master -f dry_run=true   # stop before the publish
+gh workflow run release.yml --ref master -f force=true     # skip the check for releasable changes
+```
+
+A merge brings in the branch's own commits, so each commit needs the Conventional Commits form too; a squash merge's subject is the pull request title.
 
 | Commit | Release |
 |---|---|
