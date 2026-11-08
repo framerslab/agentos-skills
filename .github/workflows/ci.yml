@@ -1,9 +1,18 @@
 name: CI
 
+# Every check here takes seconds, so a pull request, a push to master and the daily release run the same
+# steps. A push to master only checks; it never publishes. The release workflow (release.yml) calls this
+# file through workflow_call on master's commit before it publishes, and only on a day with a change to
+# release.
 on:
   push:
     branches: [master, main]
   pull_request:
+  workflow_call: {}
+
+# The workflow's token can read the repository and nothing else.
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -41,3 +50,6 @@ jobs:
 
       - name: Release rules
         run: node --test test/release-rules.test.mjs
+
+      - name: Release gate
+        run: node --test test/release-gate.test.mjs
