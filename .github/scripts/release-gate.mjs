@@ -35,14 +35,8 @@ const DEFAULT_TYPE_RULES = [
 
 const escape = (text) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-/** Whether a repository path is a test file. */
-export function isTestPath(path) {
-  return /(^|\/)__tests__\//.test(path) || /\.(test|spec)\.[cm]?[jt]sx?$/.test(path);
-}
-
-/** Whether a change to `path` changes what the package publishes. */
+/** Whether a change to `path` changes what the package publishes: npm packs every file under a `files` entry. */
 export function ships(path, pkg) {
-  if (isTestPath(path)) return false;
   if (path === 'package.json') return true;
   // npm packs these whatever "files" says.
   if (/^(README|LICEN[CS]E)(\.[^/]*)?$/i.test(path)) return true;
@@ -86,7 +80,10 @@ export function releaseReason(message, { rules, header, breakingHeader, noteKeyw
 /** The newest release tag reachable from HEAD, by version, or '' when there is none. */
 export function lastReleaseTag(git, tagFormat) {
   const [prefix, suffix = ''] = tagFormat.split('${version}');
-  const pattern = new RegExp(`^${escape(prefix)}(\\d+)\\.(\\d+)\\.(\\d+)${escape(suffix)}$`);
+  // A SemVer release version: no leading zero in a number, no pre-release or build part, as semantic-release
+  // reads a release on a branch with no prerelease channel.
+  const number = '(0|[1-9]\\d*)';
+  const pattern = new RegExp(`^${escape(prefix)}${number}\\.${number}\\.${number}${escape(suffix)}$`);
   const tags = git('tag', '--merged', 'HEAD')
     .split('\n')
     .map((tag) => [tag.trim(), pattern.exec(tag.trim())])

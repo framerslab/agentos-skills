@@ -13,7 +13,7 @@ const pkg = JSON.parse(readFileSync(new URL('../package.json', import.meta.url),
 const config = createRequire(import.meta.url)('../release.config.cjs');
 
 test('the files the package ships count, and the repository-only ones do not', () => {
-  for (const path of ['package.json', 'README.md', 'LICENSE', 'CONTRIBUTING.md', 'index.mjs', 'types.d.ts', 'registry.json', 'registry/curated/github/SKILL.md', 'scripts/validate-skill.mjs']) {
+  for (const path of ['package.json', 'README.md', 'LICENSE', 'CONTRIBUTING.md', 'index.mjs', 'types.d.ts', 'registry.json', 'registry/curated/github/SKILL.md', 'registry/curated/github/example.test.js', 'scripts/validate-skill.mjs']) {
     assert.equal(ships(path, pkg), true, path);
   }
   for (const path of ['.github/workflows/release.yml', '.github/scripts/release-gate.mjs', 'release.config.cjs', 'test/registry.test.mjs', 'logos/frame-logo-green-no-tagline.svg', '.gitignore', 'registryx.json']) {
@@ -74,7 +74,7 @@ test('a fix to a shipped skill releases, read from a branch a merge commit bring
   assert.deepEqual(result.releasing.map((c) => [c.sha, c.why, c.files]), [[fix, 'fix(registry)', ['registry/curated/github/SKILL.md']]]);
 });
 
-test('the newest version tag on master is the base, and a tag of another form is not', (t) => {
+test('the newest release version tag on master is the base, and a tag of another form, a leading zero or a pre-release is not', (t) => {
   const repo = repository();
   t.after(repo.cleanup);
   repo.git('tag', 'v0.9.10');
@@ -82,6 +82,8 @@ test('the newest version tag on master is the base, and a tag of another form is
   repo.git('tag', 'v0.10.0');
   repo.commit('chore: tidy', { 'index.mjs': 'export {};\n' });
   repo.git('tag', 'nightly');
+  repo.git('tag', 'v01.2.3');
+  repo.git('tag', 'v0.11.0-beta.1');
   const result = decide({ cwd: repo.cwd, pkg, config });
   assert.equal(result.lastTag, 'v0.10.0');
   assert.equal(result.releasable, false, result.reason);
