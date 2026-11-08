@@ -114,11 +114,12 @@ export function decide({ cwd, force = false, pkg, config }) {
     const why = releaseReason(message, rules);
     if (!why) continue;
     const parent = git('rev-list', '--parents', '-n', '1', sha).split(' ')[1];
-    // A merge commit's own change is the one its first parent lacks.
+    // A merge commit's own change is the one its first parent lacks. -z gives each path as it is, unquoted
+    // (git quotes a path with a non-ASCII character otherwise), ended by a NUL.
     const changed = parent
-      ? git('diff-tree', '-r', '--no-commit-id', '--name-only', '--no-renames', parent, sha)
-      : git('ls-tree', '-r', '--name-only', sha);
-    const files = changed.split('\n').filter((path) => path && ships(path, pkg));
+      ? git('diff-tree', '-r', '-z', '--no-commit-id', '--name-only', '--no-renames', parent, sha)
+      : git('ls-tree', '-r', '-z', '--name-only', sha);
+    const files = changed.split('\0').filter((path) => path && ships(path, pkg));
     if (files.length) releasing.push({ sha, header: message.split('\n')[0], why, files });
   }
   const reason = releasing.length

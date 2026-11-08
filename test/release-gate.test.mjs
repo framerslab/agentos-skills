@@ -74,6 +74,16 @@ test('a fix to a shipped skill releases, read from a branch a merge commit bring
   assert.deepEqual(result.releasing.map((c) => [c.sha, c.why, c.files]), [[fix, 'fix(registry)', ['registry/curated/github/SKILL.md']]]);
 });
 
+test('a shipped file whose name git would quote counts as itself', (t) => {
+  const repo = repository();
+  t.after(repo.cleanup);
+  repo.git('tag', 'v0.10.4');
+  repo.commit('fix(registry): name the café reference', { 'registry/curated/github/references/café.md': '# café\n' });
+  const result = decide({ cwd: repo.cwd, pkg, config });
+  assert.equal(result.releasable, true, result.reason);
+  assert.deepEqual(result.releasing[0].files, ['registry/curated/github/references/café.md']);
+});
+
 test('the newest release version tag on master is the base, and a tag of another form, a leading zero or a pre-release is not', (t) => {
   const repo = repository();
   t.after(repo.cleanup);
